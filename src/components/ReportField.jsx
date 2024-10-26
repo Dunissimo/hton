@@ -37,14 +37,14 @@ export const ReportField = ({ field }) => {
         });
 
         // console.log(updatedData);
-        
+        const colors = ["#eee", "#33a033", "#d85151"];
         switch (field.type) {
             case "CHART_PIE":
-                return <PieChart data={updatedData} colors={{}} />
+                return <PieChart data={updatedData} colors={colors} />
             case "CHART_HOR_BAR":
-                return <HorizontalBarChart data={updatedData} colors={{}} />
+                return <HorizontalBarChart data={updatedData} colors={colors} />
             case "CHART_BAR":
-                return <BarChart data={updatedData} colors={{}} />
+                return <BarChart data={updatedData} colors={colors} />
 
             default:
                 break;
