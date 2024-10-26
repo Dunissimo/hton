@@ -54,6 +54,11 @@ export const TasksTable = ({projectName, tasks}) => {
       key: 'description',
     },
     {
+      title: 'Надзадача',
+      dataIndex: 'parentId',
+      key: 'parentId',
+    },
+    {
       title: 'Исполнитель',
       dataIndex: 'executor',
       key: 'executor',
@@ -67,7 +72,7 @@ export const TasksTable = ({projectName, tasks}) => {
       title: 'Срок',
       dataIndex: 'deadline',
       key: 'deadline',
-      render: (text) => new Date(text).toLocaleDateString('ru'),
+      render: (text) => text && new Date(text).toLocaleDateString('ru'),
     },
     {
       title: 'Оценка',
