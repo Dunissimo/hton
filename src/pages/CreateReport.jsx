@@ -1,6 +1,6 @@
 import { Button, Input, Select } from "antd";
 import { ReportButtons } from "../components/ReportButtons"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportFields } from "../components/ReportFields";
 import { useDispatch } from "react-redux";
 import { addReport } from "../store/slices/reports";
@@ -18,8 +18,6 @@ export const CreateReport = () => {
         setFileds(fields => {
             return [...fields, { type, data }];
         });
-
-        setType("");
     }
 
     const handleSelectChange = (value) => {
@@ -30,7 +28,11 @@ export const CreateReport = () => {
         setData(e.target.value);
     }
 
-    const handleSave = () => {
+    const handlePropsChange = (props) => {
+        setData(props);
+    }
+
+    const handleSave = (data) => {
         const now = Date.now();
         const projectId = now; // replace to real id
 
@@ -53,19 +55,20 @@ export const CreateReport = () => {
             {/* список добавленных элементов */}
             <ReportFields fields={fields} />
 
-            <div className="max-w-[200px] m-auto">
-                <form className="flex flex-col items-center gap-4">
+            <div className="m-auto">
+                <form className="flex flex-col justify-center items-center gap-4">
                     <ReportForm
                         values={{
                             select: type,
-                            input: data
+                            input: data,
                         }}
                         handlers={{
                             select: handleSelectChange,
                             input: handleInputChange,
-                            button: addField
+                            button: addField,
+                            props: handlePropsChange,
                         }}
-                        className="flex flex-col gap-2"
+                        className="flex flex-col items-center gap-2"
                     />
                 </form>
             </div>

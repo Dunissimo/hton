@@ -1,26 +1,15 @@
 import { Link } from 'react-router-dom';
 import { ProjectItem } from '../components/ProjectItem';
-import { useEffect, useState } from "react";
-import { getAllProjects } from "../network/api.js";
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const ProjectList = () => {
-    const [projects, setProjects] = useState([]);
+    const {projects} = useSelector((state) => state.projects);
 
     useEffect(() => {
-        getAllProjects().then(response => {
-            console.log('Полученные данные проектов:', response);
-            if (Array.isArray(response)) {
-                setProjects(response);
-            } else {
-                console.error('Полученные данные не являются массивом:', response);
-                setProjects([]);
-            }
-        }).catch(error => {
-            console.error('Ошибка при получении проектов:', error);
-            setProjects([]);
-        });
-    }, []);
-
+        
+    })
+    
     return (
         <div className="my-container">
             <div className="projects-list">

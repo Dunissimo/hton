@@ -69,6 +69,29 @@ const initialState = {
                 }
             ]
         },
+    ],
+    properties: [
+        "id",
+        "project",
+        "type",
+        "status",
+        "priority",
+        "number",
+        "name",
+        "createdDate",
+        "createdAuthor",
+        "updatedDate",
+        "updatedAuthor",
+        "description",
+        "executor",
+        "owner",
+        "deadline",
+        "parentId",
+        "estimation",
+        "sprintName",
+        "wastedTime",
+        "workGroup",
+        "resolution",
     ]
 }
 
@@ -76,21 +99,23 @@ export const projectsSlice = createSlice({
     name: 'projects',
     initialState,
     reducers: {
-        addProject: (state, {payload}) => {
+        addProject: (state, { payload }) => {
             state.projects.push(payload);
         },
-        removeProject: (state, {payload}) => {
+        removeProject: (state, { payload }) => {
             state.projects = removeElement(state.projects, payload);
         }
     },
 });
 
-export const selectTasks = (state, payload) => {
-    // const pr = state.projects.projects.find(pr => pr.name === payload.name);
-    // console.log(initialState.projects)
-    // return initialState.projects.find().projects
+export const selectProject = (state, payload) => {
+    return state.projects.projects.find(pr => pr.name === payload.name);
+}
 
-    // return pr.tasks;
+export const selectTasks = (state, payload) => {
+    const pr = state.projects.projects.find(pr => pr.name === payload.name);
+
+    return pr.tasks;
 }
 
 export const { addProject, removeProject } = projectsSlice.actions;

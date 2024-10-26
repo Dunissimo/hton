@@ -6,6 +6,8 @@ import { Project } from './pages/Project';
 import { Report } from './pages/Report';
 import { CreateReport } from './pages/CreateReport';
 import { useEffect } from 'react';
+import { Test } from './pages/Test';
+import { Test2 } from './pages/Test2';
 
 const App = () => {
     const navigate = useNavigate();
@@ -26,6 +28,8 @@ const App = () => {
                 <Route path='/reports' element={<ReportList />} />
                 <Route path='/reports/:id' element={<Report />} />
                 <Route path='/reports/create' element={<CreateReport />} />
+                <Route path='/test' element={<Test />} />
+                <Route path='/test2' element={<Test2 />} />
             </Routes>
         </div>
     );

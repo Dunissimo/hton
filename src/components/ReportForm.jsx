@@ -1,20 +1,45 @@
-import { Button, Input, Select } from "antd";
+import { Button, Checkbox, Input, Select } from "antd";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
+const charts = ["CHART_PIE", "CHART_HOR_BAR", "CHART_BAR"];
 
 export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, variant = "create", className }) => {
+    const { properties } = useSelector((state) => state.projects);
+    const [selectedProps, setSelectedProps] = useState([]);
+
+    const handleCheckboxChange = (e) => {
+        const value = e.nativeEvent.target.dataset.value;
+
+        if (!e.target.checked) {
+            setSelectedProps((prev) => {
+                const newData = prev.filter(prop => prop !== value);
+                handlers.props(newData);
+                return newData;
+            });
+        } else {
+            setSelectedProps(prev => {
+                const newData = [...prev, value];
+                handlers.props(newData);
+                return newData;
+
+            });
+        }
+    }
+
     return (
         <div className={className}>
             <Select
                 onChange={handlers.select && handlers.select}
                 defaultValue={defaultValues.type || ""}
                 value={values.select}
-                className="w-full"
+                className="w-[300px]"
                 options={[
                     { value: "", label: <span>Выберите тип</span> },
                     { value: "TEXT", label: <span>Текст</span> },
-                    { value: "CHART_LINEAR", label: <span>Линейная диаграмма</span> },
-                    { value: "CHART_CIRCLE", label: <span>Круговая диаграмма</span> },
-                    { value: "CHART_SMTH", label: <span>Еще какая то диаграмма</span> },
-                    // {value: "", label: <span></span>},
+                    { value: "CHART_PIE", label: <span>Круговая диаграмма</span> },
+                    { value: "CHART_BAR", label: <span>Линейная диаграмма</span> },
+                    { value: "CHART_HOR_BAR", label: <span>Линейная горизонтальная диаграмма</span> },
                 ]}
             />
 
@@ -24,7 +49,14 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
                     defaultValue={defaultValues.data || ""}
                     onChange={handlers.input && handlers.input}
                     placeholder="Введите текст"
+                    className="w-fit"
                 />
+            }
+
+            {
+                charts.includes(values.select) && <div className="w-full flex flex-wrap justify-center gap-2">
+                    {properties.map(prop => <Checkbox data-value={prop} onChange={handleCheckboxChange}>{prop}</Checkbox>)}
+                </div>
             }
 
             {variant === "edit" && (
@@ -38,7 +70,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
                     }
                     {
                         values.select === "TEXT" && <Select
-                            placeholder="Weight "
+                            placeholder="Weight"
                             options={[
                                 { value: "regular", label: <span>Regular (400)</span> },
                                 { value: "bold", label: <span>Bold (700)</span> },
@@ -58,7 +90,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
                 </>
             )}
 
-            <Button onClick={handlers.button && handlers.button} className="w-full" type="dashed">Применить</Button>
+            <Button onClick={() => { handlers?.button(); handlers?.props([]);  }} className="max-w-[200px]" type="dashed">Применить</Button>
         </div>
     );
 }
