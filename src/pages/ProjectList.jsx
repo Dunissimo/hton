@@ -5,10 +5,6 @@ import { useEffect } from 'react';
 
 export const ProjectList = () => {
     const {projects} = useSelector((state) => state.projects);
-
-    useEffect(() => {
-        
-    })
     
     return (
         <div className="my-container">

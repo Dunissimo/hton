@@ -28,7 +28,7 @@ export const ReportField = ({ field }) => {
     const renderChart = () => {
         const updatedData = project.tasks.map((item) => {
             const newItem = {};
-            field.data.forEach((f) => {
+            field.data?.forEach((f) => {
                 if (item[f] !== undefined) {
                     newItem[f] = item[f];
                 }

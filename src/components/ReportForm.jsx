@@ -14,13 +14,21 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
         if (!e.target.checked) {
             setSelectedProps((prev) => {
                 const newData = prev.filter(prop => prop !== value);
-                handlers.props(newData);
+                
+                if (handlers.props) {
+                    handlers.props(newData);
+                }
+
                 return newData;
             });
         } else {
             setSelectedProps(prev => {
                 const newData = [...prev, value];
-                handlers.props(newData);
+                
+                if (handlers.props) {
+                    handlers.props(newData);
+                }
+
                 return newData;
 
             });
