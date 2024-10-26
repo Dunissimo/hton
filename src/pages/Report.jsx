@@ -47,7 +47,7 @@ export const Report = () => {
             </h2>
 
             {fields.map(field => (
-                <div>
+                <div style={field.styles}>
                     {field.type}: {field.data || "null"}
                 </div>
             ))}
