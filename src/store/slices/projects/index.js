@@ -86,9 +86,11 @@ export const projectsSlice = createSlice({
 });
 
 export const selectTasks = (state, payload) => {
-    const pr = state.projects.projects.find(pr => pr.name === payload.name);
-    
-    return pr.tasks;
+    // const pr = state.projects.projects.find(pr => pr.name === payload.name);
+    // console.log(initialState.projects)
+    // return initialState.projects.find().projects
+
+    // return pr.tasks;
 }
 
 export const { addProject, removeProject } = projectsSlice.actions;
