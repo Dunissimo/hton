@@ -52,6 +52,7 @@ export const TasksTable = ({projectName, tasks}) => {
       title: 'Описание',
       dataIndex: 'description',
       key: 'description',
+      width: '600px',
     },
     {
       title: 'Надзадача',
@@ -105,6 +106,7 @@ export const TasksTable = ({projectName, tasks}) => {
   
   return (
     <Table
+      bordered
       className="w-max max-w-max"
       pagination={false} 
       columns={columns} 
