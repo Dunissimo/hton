@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.my-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projects-list,
+.reports-list {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 30px;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.project-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
