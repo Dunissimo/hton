@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    reports: [
+    reports: JSON.parse(localStorage.getItem('reports')) || [
         {
             id: 131,
             projectId: 333,
@@ -29,13 +29,6 @@ const initialState = {
                         fontSize: 20
                     },
                 },
-                {
-                    type: "CHART",
-                    data: null,
-                    styles: {
-                        // ...
-                    },
-                },
             ]
         }
     ]
@@ -46,16 +39,29 @@ export const reportsSlice = createSlice({
     initialState,
     reducers: {
         addReport: (state, {payload}) => {
-            console.log('aaaa1');
-            
             state.reports = [...state.reports, payload];
+        
+            localStorage.setItem('reports', JSON.stringify(state.reports));
         },
         removeReport: (state, {payload}) => {
             state.reports = removeElement(state.reports, payload);
+          
+            localStorage.setItem('reports', JSON.stringify(state.reports));
+        },
+        updateReport: (state, {payload}) => {
+            state.reports = state.reports.map((item) => {
+                if (item.id === payload.id) {
+                    item = payload;
+                }
+
+                return item;
+            })
+         
+            localStorage.setItem('reports', JSON.stringify(state.reports));
         }
     },
 });
 
-export const { addReport, removeReport } = reportsSlice.actions;
+export const { addReport, removeReport, updateReport } = reportsSlice.actions;
 
 export default reportsSlice.reducer

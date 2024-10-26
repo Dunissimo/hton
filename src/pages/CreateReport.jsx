@@ -6,31 +6,20 @@ import { useDispatch } from "react-redux";
 import { addReport } from "../store/slices/reports";
 import { useNavigate } from "react-router-dom";
 import { ReportForm } from "../components/ReportForm";
+import { useReportForm } from "../hooks/useReportForm";
 
 export const CreateReport = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [fields, setFileds] = useState([]);
-    const [type, setType] = useState("");
-    const [data, setData] = useState([]);
-
-    const addField = () => {
-        setFileds(fields => {
-            return [...fields, { type, data }];
-        });
-    }
-
-    const handleSelectChange = (value) => {
-        setType(value);
-    };
-
-    const handleInputChange = (e) => {
-        setData(e.target.value);
-    }
-
-    const handlePropsChange = (props) => {
-        setData(props);
-    }
+    const {
+        addField, 
+        data, 
+        fields, 
+        handleInputChange, 
+        handlePropsChange, 
+        handleSelectChange, 
+        type
+    } = useReportForm();
 
     const handleSave = (data) => {
         const now = Date.now();
