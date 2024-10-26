@@ -2,42 +2,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ReportButtons } from "../components/ReportButtons";
+import { ReportFields } from "../components/ReportFields";
 
 export const Report = () => {
-    const {reports} = useSelector((state) => state.reports)
-    const [fields, setFields] = useState([
-        {
-            type: "TEXT",
-            data: "test",
-            styles: {
-                color: "red",
-            },
-        },
-        {
-            type: "TEXT",
-            data: "test 2",
-            styles: {
-                color: "green",
-            },
-        },
-        {
-            type: "TEXT",
-            data: "test 2",
-            styles: {
-                color: "blue",
-                fontSize: 20
-            },
-        },
-        {
-            type: "CHART",
-            data: null,
-            styles: {
-                // ...
-            },
-        },
-    ]);
-
     const {id} = useParams(); 
+    const {reports} = useSelector((state) => state.reports)
     const report = reports.filter(rep => rep.id === +id)[0];
     
     return (
@@ -46,11 +15,7 @@ export const Report = () => {
                 Отчет #{report.id}
             </h2>
 
-            {fields.map(field => (
-                <div style={field.styles}>
-                    {field.type}: {field.data || "null"}
-                </div>
-            ))}
+            <ReportFields fields={report.fields} />
 
             <ReportButtons />
         </div>

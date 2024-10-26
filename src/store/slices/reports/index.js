@@ -23,7 +23,7 @@ const initialState = {
                 },
                 {
                     type: "TEXT",
-                    data: "test 2",
+                    data: "test 22",
                     styles: {
                         color: "blue",
                         fontSize: 20
@@ -46,7 +46,9 @@ export const reportsSlice = createSlice({
     initialState,
     reducers: {
         addReport: (state, {payload}) => {
-            state.reports.push(payload);
+            console.log('aaaa1');
+            
+            state.reports = [...state.reports, payload];
         },
         removeReport: (state, {payload}) => {
             state.reports = removeElement(state.reports, payload);

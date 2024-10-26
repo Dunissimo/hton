@@ -7,12 +7,13 @@ import {
     SaveFilled 
 } from '@ant-design/icons';
 
-export const ReportButtons = () => {
+export const ReportButtons = ({onSave, onExport}) => {
     return (
         <>
             <FloatButton 
                 style={{insetInlineEnd: 84}} 
                 tooltip="Сохранить" 
+                onClick={onSave}
                 icon={<SaveFilled />} 
             />
     

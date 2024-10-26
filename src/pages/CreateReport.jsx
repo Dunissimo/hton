@@ -1,13 +1,48 @@
 import { Button, Input, Select } from "antd";
 import { ReportButtons } from "../components/ReportButtons"
 import { useState } from "react";
+import { ReportFields } from "../components/ReportFields";
+import { useDispatch } from "react-redux";
+import { addReport } from "../store/slices/reports";
+import { useNavigate } from "react-router-dom";
+import { ReportForm } from "../components/ReportForm";
 
 export const CreateReport = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [fields, setFileds] = useState([]);
     const [type, setType] = useState("");
+    const [data, setData] = useState([]);
 
-    const handleChange = (value) => {
+    const addField = () => {
+        setFileds(fields => {
+            return [...fields, { type, data }];
+        });
+
+        setType("");
+    }
+
+    const handleSelectChange = (value) => {
         setType(value);
     };
+
+    const handleInputChange = (e) => {
+        setData(e.target.value);
+    }
+
+    const handleSave = () => {
+        const now = Date.now();
+        const projectId = now; // replace to real id
+
+        dispatch(addReport({
+            id: now,
+            projectId,
+            createdDate: now,
+            fields
+        }));
+
+        navigate(`/reports/${now}`); // replace to report id
+    }
 
     return (
         <div className="create-report my-container">
@@ -16,25 +51,26 @@ export const CreateReport = () => {
             </h2>
 
             {/* список добавленных элементов */}
+            <ReportFields fields={fields} />
 
             <div className="max-w-[200px] m-auto">
                 <form className="flex flex-col items-center gap-4">
-                    <Select onChange={handleChange} defaultValue={""} className="w-full" options={[
-                        { value: "", label: <span>Выберите тип</span> },
-                        { value: "text", label: <span>Текст</span> },
-                        { value: "chart-linear", label: <span>Линейная диаграмма</span> },
-                        { value: "chart-circle", label: <span>Круговая диаграмма</span> },
-                        { value: "chart-smth", label: <span>Еще какая то диаграмма</span> },
-                        // {value: "", label: <span>Выберите тип</span>},
-                    ]} />
-
-                    {type === "text" && <Input placeholder="Введите текст" />}
-
-                    <Button className="w-full" type="dashed">Добавить элемент</Button>
+                    <ReportForm
+                        values={{
+                            select: type,
+                            input: data
+                        }}
+                        handlers={{
+                            select: handleSelectChange,
+                            input: handleInputChange,
+                            button: addField
+                        }}
+                        className="flex flex-col gap-2"
+                    />
                 </form>
             </div>
 
-            <ReportButtons />
+            <ReportButtons onSave={handleSave} />
         </div>
     )
 }
