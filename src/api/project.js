@@ -17,6 +17,7 @@ export const createProject = async (name) => {
         const response = await api.post('/projects', null, {
             params: { name },
         });
+        
         return response.data; // Возвращаем ID нового проекта
     } catch (error) {
         console.error('Error creating project:', error);
