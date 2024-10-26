@@ -13,7 +13,7 @@ export const ProjectList = () => {
                     <p>Нет доступных проектов. Пожалуйста, добавьте новый проект.</p>
                 ) : (
                     projects.map((item, index) => (
-                        <Link key={index} to={`/projects/${item.id}`}>
+                        <Link key={index} to={`/projects/1`}>
                             <ProjectItem {...item} />
                         </Link>
                     ))
