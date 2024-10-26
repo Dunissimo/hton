@@ -7,14 +7,14 @@ import { BarChart } from "../charts/Bar";
 import { PieChart } from "../charts/Pie";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProject } from "../../store/slices/projects";
-import { deleteProp } from "../../store/slices/reports";
+// import { deleteProp } from "../../store/slices/reports";
 
 export const ReportField = ({ field }) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [type, setType] = useState("");
+    const [type, setType] = useState(type);
     const [data, setData] = useState([]);
-    const project = useSelector((state) => selectProject(state, {name: 'Самара'}));
+    const project = useSelector((state) => selectProject(state, { name: 'Самара' }));
 
     const showDrawer = () => {
         setOpen(true);
@@ -24,7 +24,7 @@ export const ReportField = ({ field }) => {
     };
 
     const remove = (fieldId) => {
-        dispatch(deleteProp({projectName: project.name, fieldId}));        
+        // dispatch(deleteProp({projectName: project.name, fieldId}));        
     }
 
     const saveField = () => {
@@ -32,7 +32,7 @@ export const ReportField = ({ field }) => {
     }
 
     const renderChart = () => {
-        const updatedData = project.tasks.map((item) => {
+        const updatedData = project?.tasks.map((item) => {
             const newItem = {};
             field.data?.forEach((f) => {
                 if (item[f] !== undefined) {
@@ -43,7 +43,7 @@ export const ReportField = ({ field }) => {
         });
 
         const colors = ["#eee", "#33a033", "#d85151"];
-        switch (field.type) {
+        switch (type) {
             case "CHART_PIE":
                 return <PieChart data={updatedData} colors={colors} />
             case "CHART_HOR_BAR":
@@ -58,26 +58,36 @@ export const ReportField = ({ field }) => {
 
 
     return (
-        <div className="flex" key={field.data} style={field.styles}>
-            {field.type === "TEXT" && field.data}
+        <div
+            className="flex"
+            key={Math.random() * 100}
+            style={field.styles}
+        >
+            {type === "TEXT" && field.data}
 
             <div className="max-w-1/2">
-                {field.type != "TEXT" && renderChart()}
+                {type != "TEXT" && renderChart()}
             </div>
 
             <div className="ml-4 cursor-pointer hover:scale-110">
                 <EditOutlined onClick={showDrawer} />
             </div>
-            <div className="ml-4 cursor-pointer hover:scale-110">
+            {/* <div className="ml-4 cursor-pointer hover:scale-110">
                 <DeleteOutlined onClick={() => remove(field.id)} />
-            </div>
+            </div> */}
 
             <Drawer title="Редактирование" onClose={onClose} open={open}>
                 <ReportForm
                     variant="edit"
                     className="flex flex-col gap-2"
-                    defaultValues={{ type: field.type, data: field.data }}
-                    values={{ select: type, input: data }}
+                    defaultValues={{
+                        type,
+                        data: type === "TEXT" ? field.data.text : field.data
+                    }}
+                    values={{
+                        select: type,
+                        input: type === "TEXT" ? data.text : data
+                    }}
                     handlers={{
                         select: (value) => setType(value),
                         input: (e) => setData(e.target.value),

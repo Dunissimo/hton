@@ -6,7 +6,7 @@ export const ReportFields = ({fields}) => {
     return (
         <>
             {fields.map(field => (
-                <ReportField field={field} key={field.data} />
+                <ReportField field={field} key={Math.random() * 100} />
             ))}
         </>
     )

@@ -14,6 +14,8 @@ export const getReportById = async (id) => {
 // Метод для сохранения всех элементов отчета
 export const saveAllFields = async (id, elements) => {
     try {
+        console.log(elements);
+        
         const response = await api.post(`/reports/${id}/elements`, elements);
         return response.data; // Успешное сохранение
     } catch (error) {

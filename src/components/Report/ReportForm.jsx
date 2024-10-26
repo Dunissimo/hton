@@ -14,7 +14,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
         if (!e.target.checked) {
             setSelectedProps((prev) => {
                 const newData = prev.filter(prop => prop !== value);
-                
+
                 if (handlers.props) {
                     handlers.props(newData);
                 }
@@ -24,7 +24,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
         } else {
             setSelectedProps(prev => {
                 const newData = [...prev, value];
-                
+
                 if (handlers.props) {
                     handlers.props(newData);
                 }
@@ -38,7 +38,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
     return (
         <div className={className}>
             <Select
-                onChange={handlers.select && handlers.select}
+                onChange={handlers.select}
                 defaultValue={defaultValues.type || ""}
                 value={values.select}
                 className="w-[300px]"
@@ -55,7 +55,7 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
                 values.select === "TEXT" && <Input
                     value={values.input}
                     defaultValue={defaultValues.data || ""}
-                    onChange={handlers.input && handlers.input}
+                    onChange={handlers.input}
                     placeholder="Введите текст"
                     className="w-fit"
                 />
@@ -63,42 +63,45 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
 
             {
                 charts.includes(values.select) && <div className="w-full flex flex-wrap justify-center gap-2">
+                    {properties.length == 0 && <span>Нет данных</span>}
                     {properties.map(prop => <Checkbox data-value={prop} onChange={handleCheckboxChange}>{prop}</Checkbox>)}
                 </div>
             }
 
-            {variant === "edit" && (
-                <>
-                    {
-                        values.select === "TEXT" && <Input
-                            addonBefore="#"
-                            maxLength={6}
-                            placeholder="Цвет"
-                        />
-                    }
-                    {
-                        values.select === "TEXT" && <Select
-                            placeholder="Weight"
+            {
+                variant === "edit" && (
+                    <>
+                        {
+                            values.select === "TEXT" && <Input
+                                addonBefore="#"
+                                maxLength={6}
+                                placeholder="Цвет"
+                            />
+                        }
+                        {
+                            values.select === "TEXT" && <Select
+                                placeholder="Weight"
+                                options={[
+                                    { value: "regular", label: <span>Regular (400)</span> },
+                                    { value: "bold", label: <span>Bold (700)</span> },
+                                ]}
+                            />
+                        }
+
+                        <Input placeholder="Размер" />
+                        <Select
+                            placeholder="Позиция"
                             options={[
-                                { value: "regular", label: <span>Regular (400)</span> },
-                                { value: "bold", label: <span>Bold (700)</span> },
+                                { value: "start", label: <span>Start</span> },
+                                { value: "center", label: <span>Center</span> },
+                                { value: "end", label: <span>End</span> },
                             ]}
                         />
-                    }
+                    </>
+                )
+            }
 
-                    <Input placeholder="Размер" />
-                    <Select
-                        placeholder="Позиция"
-                        options={[
-                            { value: "start", label: <span>Start</span> },
-                            { value: "center", label: <span>Center</span> },
-                            { value: "end", label: <span>End</span> },
-                        ]}
-                    />
-                </>
-            )}
-
-            <Button onClick={() => { handlers?.button(); handlers?.props([]);  }} className="max-w-[200px]" type="dashed">Применить</Button>
+            <Button disabled={values.select != "TEXT" && properties.length == 0} onClick={() => { handlers?.button(); handlers?.props([]); }} className="max-w-[200px]" type="dashed">Применить</Button>
         </div>
     );
 }
