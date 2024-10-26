@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ProjectItem } from '../components/ProjectItem';
+import { ProjectItem } from '../../components/ProjectItem';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 

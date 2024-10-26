@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./index.css"; // Базовый стиль
-
-function StyleSwitcher() {
+    
+export const StyleSwitcher = () => {
     const [userStyle, setUserStyle] = useState(null);
     const [isUserStyleApplied, setIsUserStyleApplied] = useState(false);
 
@@ -71,5 +70,3 @@ function StyleSwitcher() {
         </div>
     );
 }
-
-export default StyleSwitcher;

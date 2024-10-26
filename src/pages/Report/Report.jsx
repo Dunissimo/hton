@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ReportButtons } from "../components/ReportButtons";
-import { ReportFields } from "../components/ReportFields";
-import { ReportForm } from "../components/ReportForm";
-import { useReportForm } from "../hooks/useReportForm";
-import { updateReport } from "../store/slices/reports";
+import { ReportButtons } from "../../components/Report/ReportButtons";
+import { ReportFields } from "../../components/Report/ReportFields";
+import { ReportForm } from "../../components/Report/ReportForm";
+import { useReportForm } from "../../hooks/useReportForm";
+import { updateReport } from "../../store/slices/reports";
 
 export const Report = () => {
     const { id } = useParams();

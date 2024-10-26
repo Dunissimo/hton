@@ -1,10 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 import { Button, Input, Select } from 'antd';
-import FileUploadComponent from "../components/FileUploadComponent.jsx";
+import FileUploadComponent from "../../components/FileUploadComponent.jsx";
 import { useEffect, useState } from "react";
-import { getByIdProject } from "../network/api.js";
-import {TasksTable} from "../components/TasksTable.jsx";
-import {selectTasks} from "../store/slices/projects/index.js";
+import { getByIdProject } from "../../network/api.js";
+import {TasksTable} from "../../components/TasksTable.jsx";
+import {selectTasks} from "../../store/slices/projects/index.js";
 import {useSelector} from "react-redux";
 
 export const Project = () => {

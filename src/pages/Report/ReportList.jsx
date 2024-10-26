@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ReportItem } from '../components/ReportItem';
+import { ReportItem } from '../../components/Report/ReportItem';
 
 export const ReportList = () => {
     const { reports } = useSelector((state) => state.reports);
-
-    console.log(reports);
 
     return (
         <div className="my-container">
@@ -17,5 +15,5 @@ export const ReportList = () => {
                 ))}
             </div>
         </div>
-    )
+    );
 }

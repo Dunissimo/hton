@@ -1,14 +1,16 @@
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
 import { useState } from "react";
 import { ReportForm } from "./ReportForm";
-import { HorizontalBarChart } from "./charts/HorizontalBar";
-import { BarChart } from "./charts/Bar";
-import { PieChart } from "./charts/Pie";
-import { useSelector } from "react-redux";
-import { selectProject } from "../store/slices/projects";
+import { HorizontalBarChart } from "../charts/HorizontalBar";
+import { BarChart } from "../charts/Bar";
+import { PieChart } from "../charts/Pie";
+import { useDispatch, useSelector } from "react-redux";
+import { selectProject } from "../../store/slices/projects";
+import { deleteProp } from "../../store/slices/reports";
 
 export const ReportField = ({ field }) => {
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [type, setType] = useState("");
     const [data, setData] = useState([]);
@@ -20,6 +22,10 @@ export const ReportField = ({ field }) => {
     const onClose = () => {
         setOpen(false);
     };
+
+    const remove = (fieldId) => {
+        dispatch(deleteProp({projectName: project.name, fieldId}));        
+    }
 
     const saveField = () => {
 
@@ -36,7 +42,6 @@ export const ReportField = ({ field }) => {
             return newItem;
         });
 
-        // console.log(updatedData);
         const colors = ["#eee", "#33a033", "#d85151"];
         switch (field.type) {
             case "CHART_PIE":
@@ -62,6 +67,9 @@ export const ReportField = ({ field }) => {
 
             <div className="ml-4 cursor-pointer hover:scale-110">
                 <EditOutlined onClick={showDrawer} />
+            </div>
+            <div className="ml-4 cursor-pointer hover:scale-110">
+                <DeleteOutlined onClick={() => remove(field.id)} />
             </div>
 
             <Drawer title="Редактирование" onClose={onClose} open={open}>

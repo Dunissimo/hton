@@ -1,11 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom"
-import { Menu } from "antd";
-import { useState } from "react";
-
-const links = {
-    "/": "projects",
-    "/reports": "reports",
-}
+import { NavLink } from "react-router-dom"
 
 export const Header = () => {
     return (
@@ -17,6 +10,10 @@ export const Header = () => {
 
                 <NavLink className={({ isActive }) => isActive ? "font-bold" : ""} to="/reports">
                     Отчеты
+                </NavLink>
+
+                <NavLink className={({ isActive }) => isActive ? "font-bold" : ""} to="/styles">
+                    Стили
                 </NavLink>
             </div>
         </header>

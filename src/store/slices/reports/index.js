@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { removeElement } from '../../../utils/helpers';
 
 const initialState = {
     reports: JSON.parse(localStorage.getItem('reports')) || [
@@ -8,6 +9,7 @@ const initialState = {
             createdDate: "2023-06-22 12:30:18.595616",
             fields: [
                 {
+                    id: 1,
                     type: "TEXT",
                     data: "test",
                     styles: {
@@ -15,6 +17,7 @@ const initialState = {
                     },
                 },
                 {
+                    id: 2,
                     type: "TEXT",
                     data: "test 2",
                     styles: {
@@ -22,6 +25,7 @@ const initialState = {
                     },
                 },
                 {
+                    id: 3,
                     type: "TEXT",
                     data: "test 22",
                     styles: {
@@ -31,7 +35,9 @@ const initialState = {
                 },
             ]
         }
-    ]
+    ],
+    deleted: JSON.parse(localStorage.getItem('deletedReports')) || [],
+    deletedProps: JSON.parse(localStorage.getItem('deletedProps')) || [],
 }
 
 export const reportsSlice = createSlice({
@@ -58,10 +64,24 @@ export const reportsSlice = createSlice({
             })
          
             localStorage.setItem('reports', JSON.stringify(state.reports));
+        },
+        deleteReport: (state, {payload}) => {
+            const removable = state.reports.find(rep => rep.id === payload.id);
+            
+            state.deleted = [...state.deleted, removable];
+            state.reports = removeElement(state.reports, payload)
+        },
+        deleteProp: (state, {payload}) => {
+            const report = state.reports.find(rep => rep.id === payload.projectId);
+            console.log(report);
+            
+            const task = report.fields.find(task => task.id === payload.fieldId);
+
+            console.log(task);
         }
     },
 });
 
-export const { addReport, removeReport, updateReport } = reportsSlice.actions;
+export const { addReport, removeReport, updateReport, deleteProp, deleteReport } = reportsSlice.actions;
 
 export default reportsSlice.reducer

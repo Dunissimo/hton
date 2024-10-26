@@ -1,12 +1,12 @@
 import { Button, Input, Select } from "antd";
-import { ReportButtons } from "../components/ReportButtons"
+import { ReportButtons } from "../../components/Report/ReportButtons"
 import { useEffect, useState } from "react";
-import { ReportFields } from "../components/ReportFields";
+import { ReportFields } from "../../components/Report/ReportFields";
 import { useDispatch } from "react-redux";
-import { addReport } from "../store/slices/reports";
+import { addReport } from "../../store/slices/reports";
 import { useNavigate } from "react-router-dom";
-import { ReportForm } from "../components/ReportForm";
-import { useReportForm } from "../hooks/useReportForm";
+import { ReportForm } from "../../components/Report/ReportForm";
+import { useReportForm } from "../../hooks/useReportForm";
 
 export const CreateReport = () => {
     const dispatch = useDispatch();

@@ -7,7 +7,7 @@ export const useReportForm = () => {
 
     const addField = () => {
         setFileds(fields => {
-            return [...fields, { type, data }];
+            return [...fields, {type, data}];
         });
     }
 
