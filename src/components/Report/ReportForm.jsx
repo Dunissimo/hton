@@ -14,11 +14,12 @@ export const ReportForm = ({
     properties
 }) => {
     const [selectedProps, setSelectedProps] = useState([]);
-    const [dataType, setDataType] = useState("date");
+    const [dataType, setDataType] = useState([]);
     const [isGroup, setIsGroup] = useState(false);
 
     const handleCheckboxChange = (e) => {
         const value = e.nativeEvent.target.dataset.value;
+        const type = e.nativeEvent.target.dataset.type;
 
         if (!e.target.checked) {
             setSelectedProps((prev) => {
@@ -28,21 +29,29 @@ export const ReportForm = ({
                     handlers.props(newData);
                 }
 
+                setDataType(prev => prev.filter(prop => prop !== type));
+
                 return newData;
             });
         } else {
             setSelectedProps(prev => {
-                const newData = [...prev, value];
+                const newData = [...prev, { type, value }];
 
                 if (handlers.props) {
                     handlers.props(newData);
                 }
 
-                return newData;
+                setDataType(prev => [...prev, type]);
 
+                return newData;
             });
         }
     }
+
+    useEffect(() => {
+        console.log(dataType);
+        
+    }, [dataType]);
 
     return (
         <div className={className}>
@@ -77,6 +86,7 @@ export const ReportForm = ({
                         {
                             properties?.map(prop => (
                                 <Checkbox
+                                    data-type={prop.type}
                                     data-value={prop.name}
                                     onChange={handleCheckboxChange}
                                 >
@@ -96,24 +106,28 @@ export const ReportForm = ({
                     </div>
 
                     <div>
-                        {isGroup && (dataType === 'date' ? (
-                            <>
-                                <Select defaultValue={""} className="w-[300px]" options={[
-                                    { value: "", label: "Начальная дата" },
-                                    { value: "20.02.2003", label: "20.02.2003" },
-                                    { value: "20.02.2004", label: "20.02.2004" },
-                                    { value: "20.02.2005", label: "20.02.2005" },
-                                    { value: "20.02.2006", label: "20.02.2006" },
-                                ]} /> <br />
-                                <Select defaultValue={""} className="w-[300px]" options={[
-                                    { value: "", label: "Конечная дата" },
-                                    { value: "20.02.2010", label: "20.02.2010" },
-                                    { value: "20.02.2011", label: "20.02.2011" },
-                                    { value: "20.02.2012", label: "20.02.2012" },
-                                    { value: "20.02.2013", label: "20.02.2013" },
-                                ]} />
-                            </>
-                        ) : (
+                        {
+                            dataType.includes('DATE') && (
+                                <>
+                                    <Select defaultValue={""} className="w-[300px]" options={[
+                                        { value: "", label: "Начальная дата" },
+                                        { value: "20.02.2003", label: "20.02.2003" },
+                                        { value: "20.02.2004", label: "20.02.2004" },
+                                        { value: "20.02.2005", label: "20.02.2005" },
+                                        { value: "20.02.2006", label: "20.02.2006" },
+                                    ]} /> <br />
+                                    <Select defaultValue={""} className="w-[300px]" options={[
+                                        { value: "", label: "Конечная дата" },
+                                        { value: "20.02.2010", label: "20.02.2010" },
+                                        { value: "20.02.2011", label: "20.02.2011" },
+                                        { value: "20.02.2012", label: "20.02.2012" },
+                                        { value: "20.02.2013", label: "20.02.2013" },
+                                    ]} />
+                                </>
+                            )
+                        }
+                        {
+                            dataType.includes("INTEGER") && 
                             <>
                                 <Select defaultValue={""} className="w-[300px]" options={[
                                     { value: "", label: "Начало" },
@@ -132,7 +146,7 @@ export const ReportForm = ({
                                     { value: "500", label: "500" },
                                 ]} />
                             </>
-                        ))}
+                        }
                     </div>
 
                 </div>
