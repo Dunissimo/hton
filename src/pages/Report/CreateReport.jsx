@@ -22,9 +22,9 @@ export const CreateReport = () => {
             setProperties(d)
         });
 
-        getAllTasks(id).then(d => {
-            setTasks(d)
-        })
+        // getAllTasks(id).then(d => {
+        //     setTasks(d)
+        // });
     }, [])
 
     const {

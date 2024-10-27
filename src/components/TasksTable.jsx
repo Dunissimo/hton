@@ -1,4 +1,5 @@
 import { Table } from 'antd';
+import { useEffect } from 'react';
 
 // Note: в name есть "теги", как фича, 
 // можно сделать сортировку по ним, красиво выделять и тд
@@ -102,7 +103,12 @@ export const TasksTable = ({projectName, tasks}) => {
     },
   ];
 
-  const filteredTasks = tasks.filter((task) => task.project === projectName);
+  useEffect(() => {
+    console.log(tasks);
+    
+  })
+
+  const filteredTasks = tasks?.filter((task) => task.project === projectName);
   
   return (
     <Table
