@@ -18,17 +18,9 @@ export const useChart = (data) => {
     const [colors, setColor] = useState({});
 
     const generateColors = (data) => {
-        data.forEach(t => {
-            setColor(color => {
-                if (!color[t]) {
-                    color[t] = [generateHex()];
-                } else {
-                    color[t] = generateHexs(data.length);
-                }
-    
-                return color;
-            });
-        })
+        data[0].length
+
+        setColor(generateHexs(data.length));
     }
 
     return { colors, generateColors };

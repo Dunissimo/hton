@@ -8,12 +8,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export const PieChart = ({ data }) => {
     const [count, setCount] = useState({});
     const {colors, generateColors} = useChart(data);    
+    // const [dataToRender, setDataToRender] = useState(data);
 
     useEffect(() => {
-        data?.forEach(sender => {
-            sender?.forEach((a) => {
-                console.log(sender);
-                generateColors(sender);
+        data?.forEach(d => {
+            generateColors(d)
+
+            d?.forEach((a) => {
                 
                 setCount(prev => {
                     if (!prev[a]) {

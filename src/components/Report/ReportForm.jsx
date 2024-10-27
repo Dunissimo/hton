@@ -77,10 +77,10 @@ export const ReportForm = ({
                         {
                             properties?.map(prop => (
                                 <Checkbox
-                                    data-value={prop}
+                                    data-value={prop.name}
                                     onChange={handleCheckboxChange}
                                 >
-                                    {prop}
+                                    {prop.name}
                                 </Checkbox>
                             ))
                         }

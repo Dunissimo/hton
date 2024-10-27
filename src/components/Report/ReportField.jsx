@@ -38,14 +38,14 @@ export const ReportField = ({ field, tasks }) => {
         field.data?.props?.forEach((f) => {
             updatedData.push(mapData.get(f))
         });
-            
+
         switch (type) {
             case "CHART_PIE":
-                return <PieChart data={updatedData} colors={colors} />
+                return <PieChart data={updatedData} />
             case "CHART_HOR_BAR":
-                return <HorizontalBarChart data={updatedData} colors={colors} />
+                return <HorizontalBarChart data={updatedData} />
             case "CHART_BAR":
-                return <BarChart data={updatedData} colors={colors} />
+                return <BarChart data={updatedData} />
 
             default:
                 break;

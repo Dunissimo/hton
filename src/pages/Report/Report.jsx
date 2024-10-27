@@ -27,7 +27,7 @@ export const Report = () => {
     const getFields = async () => {
         if (!report) return;
 
-        setFields(await getAllFields(1));
+        setFields(await getAllFields(+id));
     }
 
     useEffect(() => {
