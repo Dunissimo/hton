@@ -10,8 +10,8 @@ export const ReportList = () => {
 
     useEffect(() => {
         dispatch(fetchReportsReq());
-    })
-
+    }, []);
+    
     return (
         <div className="my-container">
             <div className="reports-list">
