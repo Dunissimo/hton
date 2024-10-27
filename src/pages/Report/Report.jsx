@@ -11,6 +11,8 @@ import { fetchReportsReq } from "../../store/slices/reports";
 import { useModal } from "../../hooks/useModal";
 import { getAllFields, saveAllFields } from "../../api/report";
 import { getAllProperties, getAllTasks } from "../../api/project.js";
+import jsPDF from "jspdf";
+import domtoimage from 'dom-to-image-more';
 
 export const Report = () => {
     const dispatch = useDispatch();
@@ -44,10 +46,6 @@ export const Report = () => {
         getFields();
     }, [report])
 
-    useEffect(() => {
-        console.log(loading);
-    }, [loading]);
-
     const {
         addField,
         data,
@@ -60,6 +58,30 @@ export const Report = () => {
 
     if (loading) {
         return <span>Loading...</span>
+    }
+
+    const handlePdfExport = () => {
+        const doc = new jsPDF();
+        const _fields = [...reportFields, ...fields];
+
+
+        _fields.forEach((rep, i) => {
+            if (rep.type === "TEXT") {
+                doc.text(rep.data.text, 10, 10 * (i + 1));
+            } else {
+                // const charts = document.querySelectorAll(".reportField-chart canvas");
+                
+                // if (charts.length != 0) {
+                //     charts.forEach((chart) => {
+                //         domtoimage.toPng(chart).then((res) => {
+                //             doc.addImage(res, "PNG", 10, (10 * i), 100, 100);
+                //         });
+                //     });
+                // }
+            }
+        });
+
+        doc.save("data.pdf");
     }
 
     const handleSave = () => {
@@ -85,7 +107,9 @@ export const Report = () => {
             <ReportFields fields={reportFields} tasks={tasks} />
             <ReportFields fields={fields} tasks={tasks} />
 
-            <ReportButtons onSave={handleSave} />
+            <ReportButtons onSave={handleSave} onExport={{
+                pdf: handlePdfExport
+            }} />
 
             <Button onClick={() => changeOpen(true)}>
                 <PlusCircleOutlined />

@@ -102,11 +102,6 @@ export const TasksTable = ({projectName, tasks}) => {
     },
   ];
 
-  useEffect(() => {
-    console.log(tasks);
-    
-  })
-
   if (!tasks || tasks.length == 0) return;
 
   // const filteredTasks = tasks?.filter((task) => task.project === projectName);

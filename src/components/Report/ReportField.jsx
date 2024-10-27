@@ -36,10 +36,9 @@ export const ReportField = ({ field, tasks }) => {
         const mapData = new Map(Object.entries(tasks || {}));
 
         field.data?.props?.forEach((f) => {
-            updatedData.push({ f: mapData.get(f) })
+            updatedData.push(mapData.get(f))
         });
-
-        const colors = ["#eee", "#33a033", "#d85151"];
+            
         switch (type) {
             case "CHART_PIE":
                 return <PieChart data={updatedData} colors={colors} />
@@ -61,7 +60,7 @@ export const ReportField = ({ field, tasks }) => {
         >
             {type === "TEXT" && field.data.text}
 
-            <div className="max-w-1/2">
+            <div className="max-w-1/2 reportField-chart">
                 {type != "TEXT" && renderChart()}
             </div>
 
