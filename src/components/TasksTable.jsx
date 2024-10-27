@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 // можно сделать сортировку по ним, красиво выделять и тд
 
 export const TasksTable = ({projectName, tasks}) => {
-
   const columns = [
     {
       title: 'Статус',
@@ -108,7 +107,9 @@ export const TasksTable = ({projectName, tasks}) => {
     
   })
 
-  const filteredTasks = tasks?.filter((task) => task.project === projectName);
+  if (!tasks || tasks.length == 0) return;
+
+  // const filteredTasks = tasks?.filter((task) => task.project === projectName);
   
   return (
     <Table
@@ -116,7 +117,7 @@ export const TasksTable = ({projectName, tasks}) => {
       className="w-max max-w-max"
       pagination={false} 
       columns={columns} 
-      dataSource={filteredTasks}
+      dataSource={tasks || []}
       rowKey={(record) => record.id} 
     />
   );

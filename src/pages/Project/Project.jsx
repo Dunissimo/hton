@@ -29,6 +29,10 @@ export const Project = () => {
         });
     }, [id]);
 
+    // useEffect(() => {
+    //     console.log(typeof  tasks);
+    // }, [tasks]);
+
     // Проверка на наличие проекта
     if (!project) {
         return <p>Загрузка проекта...</p>; // Сообщение о загрузке, если проект еще не загружен
@@ -69,9 +73,9 @@ export const Project = () => {
                     </form>
                 }
 
-                <div className="project-table-wrapper">
-                    <TasksTable projectName={project.name} tasks={tasks}/>
-                </div>
+                {/* <div className="project-table-wrapper">
+                    <TasksTable projectName={project.name} tasks={tasks || []}/>
+                </div> */}
             </div>
         </div>
     );

@@ -9,14 +9,15 @@ import { ReportForm } from "../../components/Report/ReportForm";
 import { useReportForm } from "../../hooks/useReportForm";
 import { fetchReportsReq } from "../../store/slices/reports";
 import { useModal } from "../../hooks/useModal";
-import {getAllFields, saveAllFields} from "../../api/report";
-import {getAllProperties, getAllTasks} from "../../api/project.js";
+import { getAllFields, saveAllFields } from "../../api/report";
+import { getAllProperties, getAllTasks } from "../../api/project.js";
 
 export const Report = () => {
     const dispatch = useDispatch();
     const { changeOpen, isOpen } = useModal();
     const { id } = useParams();
     const report = useSelector((state) => state.reports.reports.find(item => item.id === +id));
+    const { loading } = useSelector((state) => state.reports);
     const [reportFields, setFields] = useState([]);
     const [properties, setProperties] = useState([])
     const [tasks, setTasks] = useState([])
@@ -28,7 +29,6 @@ export const Report = () => {
     }
 
     useEffect(() => {
-        console.log(id)
         dispatch(fetchReportsReq());
 
         getAllProperties(id).then(d => {
@@ -44,15 +44,23 @@ export const Report = () => {
         getFields();
     }, [report])
 
+    useEffect(() => {
+        console.log(loading);
+    }, [loading]);
+
     const {
-        addField, 
-        data, 
-        fields, 
-        handleInputChange, 
-        handlePropsChange, 
-        handleSelectChange, 
+        addField,
+        data,
+        fields,
+        handleInputChange,
+        handlePropsChange,
+        handleSelectChange,
         type
     } = useReportForm();
+
+    if (loading) {
+        return <span>Loading...</span>
+    }
 
     const handleSave = () => {
         let resFields = [];
@@ -74,8 +82,8 @@ export const Report = () => {
                 Отчет #{report?.id}
             </h2>
 
-            <ReportFields fields={reportFields} tasks={tasks}/>
-            <ReportFields fields={fields} tasks={tasks}/>
+            <ReportFields fields={reportFields} tasks={tasks} />
+            <ReportFields fields={fields} tasks={tasks} />
 
             <ReportButtons onSave={handleSave} />
 
@@ -94,7 +102,7 @@ export const Report = () => {
                             handlers={{
                                 select: handleSelectChange,
                                 input: handleInputChange,
-                                button: () => {addField(); changeOpen(false);},
+                                button: () => { addField(); changeOpen(false); },
                                 props: handlePropsChange,
                             }}
                             properties={properties}

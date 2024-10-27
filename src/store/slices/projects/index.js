@@ -133,7 +133,6 @@ export const projectsSlice = createSlice({
             state.error = null;
         }).addCase(createProjectReq.fulfilled, (state, {payload}) => {
             state.loading = false;
-            console.log(payload);
             state.projects.push(payload);
         }).addCase(createProjectReq.rejected, (state, {error}) => {
             state.loading = false;
