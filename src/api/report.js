@@ -11,6 +11,17 @@ export const getReportById = async (id) => {
     }
 };
 
+// Метод для получения всех отчетов
+export const getAllReports = async () => {
+    try {
+        const response = await api.get('/reports');
+        return response.data; // Возвращаем массив проектов
+    } catch (error) {
+        console.error('Error fetching reports:', error);
+        throw error; // Пробрасываем ошибку
+    }
+};
+
 // Метод для сохранения всех элементов отчета
 export const saveAllFields = async (id, elements) => {
     try {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { removeElement } from '../../../utils/helpers';
-import { getReportById, saveAllFields } from '../../../api/report';
+import { getAllReports, getReportById, saveAllFields } from '../../../api/report';
 
 const initialState = {
     reports: JSON.parse(localStorage.getItem('reports')) || [
@@ -45,7 +45,7 @@ const initialState = {
 
 export const fetchReportsReq = createAsyncThunk(
     "reports/getAll",
-    async () => [await getReportById(1)] // in future we will get all reports, maybe
+    async () => getAllReports() // in future we will get all reports, maybe
 );
 
 export const saveReportFieldsReq = createAsyncThunk(
