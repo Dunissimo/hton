@@ -1,12 +1,12 @@
 import { ReportField } from "./ReportField";
 
-export const ReportFields = ({fields}) => {
+export const ReportFields = ({fields, tasks}) => {
     if (fields?.length == 0 || !Array.isArray(fields)) return;
 
     return (
         <>
             {fields.map(field => (
-                <ReportField field={field} key={Math.random() * 100} />
+                <ReportField field={field} tasks={tasks} key={Math.random() * 100} />
             ))}
         </>
     )

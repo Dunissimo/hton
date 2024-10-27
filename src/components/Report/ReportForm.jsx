@@ -1,11 +1,10 @@
 import { Button, Checkbox, Input, Select } from "antd";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useSelector } from "react-redux";
 
 const charts = ["CHART_PIE", "CHART_HOR_BAR", "CHART_BAR"];
 
-export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, variant = "create", className }) => {
-    const { properties } = useSelector((state) => state.projects);
+export const ReportForm = ({ field, values = {}, defaultValues = {}, handlers = {}, variant = "create", className, properties }) => {
     const [selectedProps, setSelectedProps] = useState([]);
 
     const handleCheckboxChange = (e) => {
@@ -72,23 +71,34 @@ export const ReportForm = ({ values = {}, defaultValues = {}, handlers = {}, var
                 variant === "edit" && (
                     <>
                         {
-                            values.select === "TEXT" && <Input
-                                addonBefore="#"
-                                maxLength={6}
-                                placeholder="Цвет"
-                            />
+                            values.select === "TEXT" && (
+                                <Input
+                                    value={field?.styles?.color ?? "000000"} // Проверка field и field.styles
+                                    addonBefore="#"
+                                    maxLength={6}
+                                    placeholder="Цвет"
+                                />
+                            )
                         }
                         {
-                            values.select === "TEXT" && <Select
-                                placeholder="Weight"
-                                options={[
-                                    { value: "regular", label: <span>Regular (400)</span> },
-                                    { value: "bold", label: <span>Bold (700)</span> },
-                                ]}
-                            />
+                            values.select === "TEXT" && (
+                                <Select
+                                    value={field?.styles?.["font-weight"] ?? "regular"} // Проверка field и field.styles
+                                    placeholder="Weight"
+                                    options={[
+                                        { value: "regular", label: <span>Regular (400)</span> },
+                                        { value: "bold", label: <span>Bold (700)</span> },
+                                    ]}
+                                />
+                            )
                         }
-
-                        <Input placeholder="Размер" />
+                        <Input
+                            value={field?.styles?.["font-size"] ?? ""}
+                            onChange={(t) => {
+                                handlers.updateStyle("font-size", t)
+                            }}
+                            placeholder="Размер"
+                        />
                         <Select
                             placeholder="Позиция"
                             options={[

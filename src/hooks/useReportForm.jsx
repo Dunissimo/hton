@@ -7,7 +7,7 @@ export const useReportForm = () => {
 
     const addField = () => {
         setFileds(fields => {
-            return [...fields, {id: +Date.now(), type, data}];
+            return [...fields, {id: null, type, data}];
         });
     }
 
@@ -20,7 +20,9 @@ export const useReportForm = () => {
     }
 
     const handlePropsChange = (props) => {
-        setData(props);
+        setData({
+            props: props
+        });
     }
 
     return {fields, type, data, addField, handleInputChange, handlePropsChange, handleSelectChange}

@@ -1,16 +1,19 @@
-import { Button, Input, Select } from "antd";
 import { ReportButtons } from "../../components/Report/ReportButtons"
 import { useEffect, useState } from "react";
 import { ReportFields } from "../../components/Report/ReportFields";
 import { useDispatch } from "react-redux";
 import { addReport } from "../../store/slices/reports";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { ReportForm } from "../../components/Report/ReportForm";
 import { useReportForm } from "../../hooks/useReportForm";
+import {getAllFields} from "../../api/report.js";
 
 export const CreateReport = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [reportId, setReportId] = useState(1)
+    const [elements, setElements] = useState([])
+
     const {
         addField, 
         data, 
@@ -35,14 +38,27 @@ export const CreateReport = () => {
         navigate(`/reports/${now}`); // replace to report id
     }
 
+    useEffect(() => {
+        getAllFields(reportId).then(r => {
+            setElements(r)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [reportId])
+
     return (
         <div className="create-report my-container">
             <h2 className="mt-[40px] mb-[30px] text-center text-2xl font-bold">
-                Сформировать отчёт для проекта
+                Отчёт
             </h2>
 
-            {/* список добавленных элементов */}
-            <ReportFields fields={fields} />
+            {elements.length !== 0 ? (
+                elements.map((item, index) => (
+                    <p key={index} style={item.styles}>{item.data.text}</p>
+                ))
+            ) : null}
+
+            <ReportFields fields={fields}/>
 
             <div className="m-auto">
                 <form className="flex flex-col justify-center items-center gap-4">
@@ -62,7 +78,7 @@ export const CreateReport = () => {
                 </form>
             </div>
 
-            <ReportButtons onSave={handleSave} />
+            <ReportButtons onSave={handleSave}/>
         </div>
     )
 }

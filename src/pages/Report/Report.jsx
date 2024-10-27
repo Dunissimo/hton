@@ -7,9 +7,10 @@ import { ReportButtons } from "../../components/Report/ReportButtons";
 import { ReportFields } from "../../components/Report/ReportFields";
 import { ReportForm } from "../../components/Report/ReportForm";
 import { useReportForm } from "../../hooks/useReportForm";
-import { fetchReportsReq, saveReportFieldsReq } from "../../store/slices/reports";
+import { fetchReportsReq } from "../../store/slices/reports";
 import { useModal } from "../../hooks/useModal";
-import { getAllFields } from "../../api/report";
+import {getAllFields, saveAllFields} from "../../api/report";
+import {getAllProperties, getAllTasks} from "../../api/project.js";
 
 export const Report = () => {
     const dispatch = useDispatch();
@@ -17,16 +18,27 @@ export const Report = () => {
     const { id } = useParams();
     const report = useSelector((state) => state.reports.reports.find(item => item.id === +id));
     const [reportFields, setFields] = useState([]);
+    const [properties, setProperties] = useState([])
+    const [tasks, setTasks] = useState([])
 
     const getFields = async () => {
         if (!report) return;
 
-        setFields(await getAllFields(report.id));
+        setFields(await getAllFields(1));
     }
 
     useEffect(() => {
+        console.log(id)
         dispatch(fetchReportsReq());
-    }, []);
+
+        getAllProperties(id).then(d => {
+            setProperties(d)
+        })
+
+        getAllTasks(id).then(d => {
+            setTasks(d)
+        })
+    }, [id]);
 
     useEffect(() => {
         getFields();
@@ -51,7 +63,9 @@ export const Report = () => {
             resFields = [...fields];
         }
 
-        dispatch(saveReportFieldsReq({id: report.id, fields: resFields}));
+        saveAllFields(id, resFields)
+
+        // dispatch(saveReportFieldsReq({id: report.id, fields: resFields}));
     }
 
     return (
@@ -60,8 +74,8 @@ export const Report = () => {
                 Отчет #{report?.id}
             </h2>
 
-            <ReportFields fields={reportFields} />
-            <ReportFields fields={fields} />
+            <ReportFields fields={reportFields} tasks={tasks}/>
+            <ReportFields fields={fields} tasks={tasks}/>
 
             <ReportButtons onSave={handleSave} />
 
@@ -83,6 +97,7 @@ export const Report = () => {
                                 button: () => {addField(); changeOpen(false);},
                                 props: handlePropsChange,
                             }}
+                            properties={properties}
                             className="flex flex-col items-center gap-2"
                         />
                     </form>

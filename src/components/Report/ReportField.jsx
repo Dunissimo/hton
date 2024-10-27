@@ -9,12 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectProject } from "../../store/slices/projects";
 // import { deleteProp } from "../../store/slices/reports";
 
-export const ReportField = ({ field }) => {
+export const ReportField = ({ field, tasks }) => {
     // const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [type, setType] = useState(type);
+    const [type, setType] = useState(field.type);
     const [data, setData] = useState([]);
-    const project = useSelector((state) => selectProject(state, { name: 'Самара' }));
+    // const project = useSelector((state) => selectProject(state, { name: 'Самара' }));
 
     const showDrawer = () => {
         setOpen(true);
@@ -32,15 +32,11 @@ export const ReportField = ({ field }) => {
     }
 
     const renderChart = () => {
-        const updatedData = project?.tasks.map((item) => {
-            const newItem = {};
-            field.data?.forEach((f) => {
-                if (item[f] !== undefined) {
-                    newItem[f] = item[f];
-                }
-            });
-            return newItem;
-        });
+        const updatedData = []
+        const mapData = new Map(Object.entries(tasks));
+        field.data?.props?.forEach((f) => {
+            updatedData.push({ f: mapData.get(f) })
+        })
 
         const colors = ["#eee", "#33a033", "#d85151"];
         switch (type) {
@@ -56,14 +52,13 @@ export const ReportField = ({ field }) => {
         }
     }
 
-
     return (
         <div
             className="flex"
             key={Math.random() * 100}
             style={field.styles}
         >
-            {type === "TEXT" && field.data}
+            {type === "TEXT" && field.data.text}
 
             <div className="max-w-1/2">
                 {type != "TEXT" && renderChart()}
@@ -78,6 +73,7 @@ export const ReportField = ({ field }) => {
 
             <Drawer title="Редактирование" onClose={onClose} open={open}>
                 <ReportForm
+                    field={field}
                     variant="edit"
                     className="flex flex-col gap-2"
                     defaultValues={{
@@ -92,6 +88,9 @@ export const ReportField = ({ field }) => {
                         select: (value) => setType(value),
                         input: (e) => setData(e.target.value),
                         button: saveField,
+                        updateStyle: (key, value) => {
+                            if (field.styles !== null) field.styles[key] = value
+                        }
                     }}
                 />
             </Drawer>
