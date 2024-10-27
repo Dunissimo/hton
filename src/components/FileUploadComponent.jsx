@@ -1,20 +1,20 @@
 import { useRef } from 'react';
 import { Button } from 'antd';
-import {importData} from "../network/api.js";
+import { importData } from "../network/api.js";
 
-const FileUploadComponent = () => {
+const FileUploadComponent = ({ projectId, children }) => {
     const fileInputRef = useRef(null); // Создаем реф для input
 
     const handleFileChange = (event) => {
         const file = event.target.files[0]; // Получаем выбранный файл
         if (file) {
             const fileType = file.type;
-            importData().then(r => {
 
-            })
             // Проверяем тип файла
-            if (fileType === 'application/json' || fileType === 'text/css') {
+            if (fileType === 'application/json' || fileType === 'text/csv') {
                 console.log('Файл выбран:', file);
+
+                importData(projectId, file).then(r => {console.log(r);});
                 // Здесь можно добавить логику обработки файла
             } else {
                 alert('Пожалуйста, выберите файл в формате JSON или CSV.');
@@ -36,7 +36,7 @@ const FileUploadComponent = () => {
                 onChange={handleFileChange}
             />
             <Button type="default" onClick={handleButtonClick}>
-                Импорт
+                {children}
             </Button>
         </>
     );

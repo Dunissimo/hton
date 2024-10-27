@@ -3,16 +3,29 @@ import { useEffect, useState } from "react";
 import { ReportFields } from "../../components/Report/ReportFields";
 import { useDispatch } from "react-redux";
 import { addReport } from "../../store/slices/reports";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import { ReportForm } from "../../components/Report/ReportForm";
 import { useReportForm } from "../../hooks/useReportForm";
-import {getAllFields} from "../../api/report.js";
+import { getAllProperties, getAllTasks } from "../../api/project.js";
 
 export const CreateReport = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [reportId, setReportId] = useState(1)
     const [elements, setElements] = useState([])
+    const [properties, setProperties] = useState([]);
+    let [searchParams] = useSearchParams();
+    const [tasks, setTasks] = useState([])
+
+    useEffect(() => {
+        const id = searchParams.get('projectId');
+        getAllProperties(id).then(d => {
+            setProperties(d)
+        });
+
+        getAllTasks(id).then(d => {
+            setTasks(d)
+        })
+    }, [])
 
     const {
         addField, 
@@ -38,14 +51,6 @@ export const CreateReport = () => {
         navigate(`/reports/${now}`); // replace to report id
     }
 
-    useEffect(() => {
-        getAllFields(reportId).then(r => {
-            setElements(r)
-        }).catch(e => {
-            console.log(e)
-        })
-    }, [reportId])
-
     return (
         <div className="create-report my-container">
             <h2 className="mt-[40px] mb-[30px] text-center text-2xl font-bold">
@@ -58,7 +63,7 @@ export const CreateReport = () => {
                 ))
             ) : null}
 
-            <ReportFields fields={fields}/>
+            <ReportFields fields={fields} tasks={tasks} />
 
             <div className="m-auto">
                 <form className="flex flex-col justify-center items-center gap-4">
@@ -74,6 +79,7 @@ export const CreateReport = () => {
                             props: handlePropsChange,
                         }}
                         className="flex flex-col items-center gap-2"
+                        properties={properties}
                     />
                 </form>
             </div>

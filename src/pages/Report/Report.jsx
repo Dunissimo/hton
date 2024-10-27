@@ -33,7 +33,7 @@ export const Report = () => {
 
         getAllProperties(id).then(d => {
             setProperties(d)
-        })
+        });
 
         getAllTasks(id).then(d => {
             setTasks(d)

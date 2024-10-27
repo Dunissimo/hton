@@ -57,7 +57,7 @@ export const getAllProperties = async (id) => {
 
 export const getAllTasks = async (id) => {
     try {
-        const response = await api.get(`/reports/${id}/tasks`);
+        const response = await api.get(`/projects/${id}/tasks`);
         return response.data; // Возвращаем массив свойств
     } catch (error) {
         console.error('Error fetching project properties:', error);

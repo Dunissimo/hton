@@ -33,10 +33,11 @@ export const ReportField = ({ field, tasks }) => {
 
     const renderChart = () => {
         const updatedData = []
-        const mapData = new Map(Object.entries(tasks));
+        const mapData = new Map(Object.entries(tasks || {}));
+
         field.data?.props?.forEach((f) => {
             updatedData.push({ f: mapData.get(f) })
-        })
+        });
 
         const colors = ["#eee", "#33a033", "#d85151"];
         switch (type) {

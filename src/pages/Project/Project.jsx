@@ -6,10 +6,12 @@ import { getByIdProject } from "../../network/api.js";
 import { TasksTable } from "../../components/TasksTable.jsx";
 import { selectTasks } from "../../store/slices/projects/index.js";
 import { useSelector } from "react-redux";
+import { getAllTasks } from '../../api/project.js';
 
 export const Project = () => {
     const { id } = useParams();
     const [project, setProject] = useState(null); // Инициализация project как null
+    const [tasks, setTasks] = useState([])
 
     const name = useState("Самара")
 
@@ -20,6 +22,10 @@ export const Project = () => {
             setProject(r);
         }).catch(error => {
             console.error('Ошибка при получении проекта:', error);
+        });
+
+        getAllTasks(id).then(d => {
+            setTasks(d)
         });
     }, [id]);
 
@@ -34,21 +40,21 @@ export const Project = () => {
                 <div className="mt-[40px] mb-[40px] flex items-center justify-center gap-[15px]">
                     <h2 className="text-2xl font-bold">Проект: {project.name}</h2>
 
-                    <Link to="/reports/create">
+                    <Link to={`/reports/create?projectId=${project.id}`}>
                         <Button type="default">Сформировать отчет</Button>
                     </Link>
 
-                    <FileUploadComponent />
+                    <FileUploadComponent projectId={project.id}>
+                        Импорт
+                    </FileUploadComponent>
 
-                    <Button type="default" onClick={() => {
-                        // Логика для импорта обновлений
-                    }}>
+                    <FileUploadComponent projectId={project.id}>
                         Импорт обновлений
-                    </Button>
+                    </FileUploadComponent>
                 </div>
 
                 {
-                    project.tasks && <form className="mb-[20px] flex gap-4 items-center">
+                    tasks && <form className="mb-[20px] flex gap-4 items-center">
                         <Input className="max-w-[200px]" type="text" placeholder="Поиск" />
 
                         <Select defaultValue="" className="w-[200px]" options={[
@@ -63,9 +69,9 @@ export const Project = () => {
                     </form>
                 }
 
-                {/* <div className="project-table-wrapper">
+                <div className="project-table-wrapper">
                     <TasksTable projectName={project.name} tasks={tasks}/>
-                </div> */}
+                </div>
             </div>
         </div>
     );
